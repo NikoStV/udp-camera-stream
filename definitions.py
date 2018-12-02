@@ -4,6 +4,17 @@ import sys
 import cv2
 import pygame
 import pickle
+#import Adafruit_PCA9685
+
+class MachineControl(object):
+    """"Servo Motor Control"""
+    def __init__(self):
+        self.pwm = Adafruit_PCA9685.PCA9685()
+        self.pwm.set_pwm_freq(60)
+
+    def servcontrol(self, numb, position):
+            self.pwm.set_pwm(numb, 0, position)
+
 
 
 def create_socket(host, port, type):
@@ -97,34 +108,43 @@ def server_thread_cam(socket, client_count):
 
 
 def data_control_server(soc, host, port):
-    print("Enter the data")
     pygame.init()
-    pygame.joystick.init()
-    while 1:
-        pygame.event.get()
-        joy = pygame.joystick.Joystick(0)
-        joy.init()
-        list = []
-        for i in range(6):
-            axes = joy.get_axis(i)
-            list.append('{:>6.3f}'.format(axes))
-        for i in range(14):
-            button = joy.get_button(i)
-            list.append(format(button))
-        data = pickle.dumps(list)
-        if data:
-            soc.sendto(data, (host, port))
-        else:
-            break
+
+    if pygame.joystick.get_count() != 0:
+
+        pygame.joystick.init()
+        while 1:
+            event = pygame.event.get()
+            joy = pygame.joystick.Joystick(0)
+            joy.init()
+            list = []
+
+            for i in range(6):
+                axes = joy.get_axis(i)
+                list.append('{:>6.3f}'.format(axes))
+            for i in range(14):
+                button = joy.get_button(i)
+                list.append(format(button))
+                data = pickle.dumps(list)
+            if data:
+                soc.sendto(data, (host, port))
+            else:
+                break
+    else:
+        print('Подключите пожалуйста джостик и перезапустите программу.')
 
 def data_control_client(soc, port):
+    l=['','','','','','','','','','','','','','','','','','','','']
+    #servo = MachineControl()
     while 1:
         data, server= soc.recvfrom(256)
         if data:
             inf = pickle.loads(data)
-            #print(inf)
+            for index, signal in enumerate(inf):
+                if inf[index] != l[index]:
+                    print('Команда '+str(index)+' - '+str(inf[index]))
+                    l[index] = inf[index]
             data=b''
         else:
             data=b''
             break
-

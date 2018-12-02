@@ -1,8 +1,9 @@
 from definitions import *
 from _thread import start_new_thread
 
-#HOST = "192.168.1.35"
 HOST = "localhost"
+HOST2 = "localhost"
+#HOST = "localhost"
 PORT = 8081
 PORT2 = 8082
 client_count = 0
@@ -17,7 +18,7 @@ client_count += 1
 s2 = create_socket(HOST, PORT2, 'UDP')
 #print(client_count)
 
-start_new_thread(data_control_server, (s2, HOST, PORT2))
+start_new_thread(data_control_server, (s2, HOST2, PORT2))
 
 #s2 = create_socket(HOST, PORT2, 'UDP')
 #bind_socket(s2, HOST, PORT2)

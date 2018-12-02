@@ -5,6 +5,8 @@ import time
 
 HOST = 'localhost'
 destHOST = 'localhost'
+#HOST = '192.168.1.35'
+#destHOST = '192.168.1.35'
 PORT = 8081
 PORT2 = 8082
 
