@@ -5,7 +5,7 @@ HOST = "localhost"
 HOST2 = "localhost"
 #HOST = "localhost"
 PORT = 8081
-PORT2 = 8083
+PORT2 = 8082 
 client_count = 0
 
 #HOST = raw_input("Podaj swoj adres ip")
