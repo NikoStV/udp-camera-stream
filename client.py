@@ -3,10 +3,10 @@ from _thread import start_new_thread
 from definitions import *
 import time
 
-HOST = 'localhost'
-destHOST = 'localhost'
-#HOST = '192.168.1.35'
-#destHOST = '192.168.1.35'
+#HOST = 'localhost'
+#destHOST = 'localhost'
+HOST = '192.168.1.35'
+destHOST = '192.168.1.59'
 PORT = 8081
 PORT2 = 8082
 

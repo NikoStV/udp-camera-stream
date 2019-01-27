@@ -1,11 +1,11 @@
 from definitions import *
 from _thread import start_new_thread
 
-HOST = "localhost"
-HOST2 = "localhost"
+HOST = "192.168.1.35"
+HOST2 = "192.168.1.59"
 #HOST = "localhost"
 PORT = 8081
-PORT2 = 8083
+PORT2 = 8082
 client_count = 0
 
 #HOST = raw_input("Podaj swoj adres ip")
