@@ -4,7 +4,7 @@ import sys
 import cv2
 import pygame
 import pickle
-#import Adafruit_PCA9685
+import Adafruit_PCA9685
 
 class MachineControl(object):
     """"Servo Motor Control"""
@@ -120,8 +120,14 @@ def data_control_server(soc, host, port):
             list = []
 
             for i in range(6):
-                axes = joy.get_axis(i)
-                list.append('{:>6.3f}'.format(axes))
+                if (i<5):
+                  axes = joy.get_axis(i)*225+375
+                  print(axes)
+                  list.append('{:4.0f}'.format(axes))
+                else:
+                  axes = joy.get_axis(i) * 225 + 375
+                  print(axes)
+                  list.append('{:4.0f}'.format(axes))
             for i in range(14):
                 button = joy.get_button(i)
                 list.append(format(button))

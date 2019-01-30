@@ -33,7 +33,7 @@ class TextPrint:
 pygame.init()
 
 # Set the width and height of the screen [width,height]
-size = [500, 700]
+size = [500, 500]
 screen = pygame.display.set_mode(size)
 
 pygame.display.set_caption("My Game")
@@ -94,8 +94,15 @@ while done == False:
         textPrint.indent()
 
         for i in range(axes):
-            axis = joystick.get_axis(i)
-            textPrint.print(screen, "Axis {} value: {:>6.3f}".format(i, axis))
+            #axis = joystick.get_axis(i)*225+375
+            # textPrint.print(screen, "Axis {} value: {:>6.3f}".format(i, axis))
+            if (i < 4):
+                axis = joystick.get_axis(i) * 225 + 375
+                textPrint.print(screen, "Axis {} value: {:4.0f}".format(i, axis))
+            else:
+                axis = joystick.get_axis(i)*112.5+488
+                textPrint.print(screen, "Axis {} value: {:4.0f}".format(i, axis))
+            #textPrint.print(screen, "Axis {} value: {:4.0f}".format(i, axis))
         textPrint.unindent()
 
         buttons = joystick.get_numbuttons()
