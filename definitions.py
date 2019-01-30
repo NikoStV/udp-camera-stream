@@ -139,6 +139,11 @@ def data_control_server(soc, host, port):
     else:
         print('Подключите пожалуйста джостик и перезапустите программу.')
 
+def servo_position(num, position):
+    pwm = Adafruit_PCA9685.PCA9685()
+    pwm.set_pwm_freq(60)
+    pwm.set_pwm(num, 0, position)
+
 def data_control_client(soc, port):
     l=['','','','','','','','','','','','','','','','','','','','']
     #servo = MachineControl()
@@ -149,6 +154,7 @@ def data_control_client(soc, port):
             for index, signal in enumerate(inf):
                 if inf[index] != l[index]:
                     print('Команда '+str(index)+' - '+str(inf[index]))
+                    servo_position(index, inf[index])
                     l[index] = inf[index]
             data=b''
         else:
