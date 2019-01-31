@@ -109,9 +109,7 @@ def server_thread_cam(socket, client_count):
 
 def data_control_server(soc, host, port):
     pygame.init()
-
     if pygame.joystick.get_count() != 0:
-
         pygame.joystick.init()
         while 1:
             event = pygame.event.get()
@@ -122,39 +120,41 @@ def data_control_server(soc, host, port):
             for i in range(6):
                 if (i<5):
                   axes = joy.get_axis(i)*225+375
-                  print(axes)
                   list.append('{:4.0f}'.format(axes))
                 else:
                   axes = joy.get_axis(i) * 225 + 375
-                  print(axes)
                   list.append('{:4.0f}'.format(axes))
             for i in range(14):
                 button = joy.get_button(i)
                 list.append(format(button))
                 data = pickle.dumps(list)
             if data:
+                print(len(data))
                 soc.sendto(data, (host, port))
+
+                count = 0
+                while count < len(stringData):
+                    if count + 65565 > len(stringData):
+                        s.sendto(stringData[count:], (host, port))
+                    else:
+                        s.sendto(stringData[count:count + 65565], (host, port))
+                    count += 65565
             else:
                 break
     else:
         print('Подключите пожалуйста джостик и перезапустите программу.')
 
-def servo_position(num, position):
-    pwm = Adafruit_PCA9685.PCA9685()
-    pwm.set_pwm_freq(60)
-    pwm.set_pwm(num, 0, position)
-
 def data_control_client(soc, port):
     l=['','','','','','','','','','','','','','','','','','','','']
-    #servo = MachineControl()
+    servo = MachineControl()
     while 1:
-        data, server= soc.recvfrom(256)
+        data, server= soc.recvfrom(186)
         if data:
             inf = pickle.loads(data)
             for index, signal in enumerate(inf):
                 if inf[index] != l[index]:
-                    print('Команда '+str(index)+' - '+str(inf[index]))
-                    servo_position(index, inf[index])
+                    #print('Команда '+str(index)+' - '+str(inf[index]))
+                    servo.servcontrol(index, inf[index])
                     l[index] = inf[index]
             data=b''
         else:
